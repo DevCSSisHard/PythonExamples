@@ -7,6 +7,9 @@ import random
 
 
 #Hot dog math for Prog & Problem Solving 129 stuff.
+from employee import SalaryEmployee, HourlyEmployee, Employee
+
+
 def test_129():
     packedDog = 10
     #note, always 10 hotdogs 8 buns.
@@ -284,6 +287,7 @@ if __name__ == '__main__':
     #print(repr(emp1))
     #emp2 = HourlyEmployee("John", 120, 15, 14)
     #print(repr(emp2))
+    #this is supposed to throw a type error.
     #emp3 = Employee("Bill frickin gates", 1)
     #print(repr(emp3))
 
