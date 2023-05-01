@@ -1,9 +1,13 @@
 """
 Bunch of example functions and statements to demonstrate to primarily first and second year students.
 Will add more as needed from assignments and such.
+Uncomment functions as needed to see functionality.
 """
 import math
+import os
 import random
+import sqlite3
+from sqlite3 import Error
 
 
 #Hot dog math for Prog & Problem Solving 129 stuff.
@@ -125,9 +129,6 @@ def grades():
         total += grade
         grade_counter += 1
         grade = int(input('Enter grade, -1 to end: '))
-
-
-
 
     # termination phase
     gradefile.close()
@@ -270,9 +271,61 @@ def hanoi(n, src,dest,extra):
     print("Move disk", n, "from source", src, "to destination", dest)
     hanoi(n - 1, extra, dest, src)
 
+def sqlthings():
+    cur = os.getcwd()
+    conn = create_dbconnection(cur+'/test.db')
+    #Creating a table - I only needed to do this once to generate it. Call it again if needed I guess.
+    # sql_createtable = """CREATE TABLE IF NOT EXISTS books(
+    # book_id integer,
+    # author_full_name text,
+    # publication_date text,
+    # book_title text,
+    # num_copies integer);
+    # """
+    bookID = input("Enter book ID:")
+    author_name = input("Enter author name:")
+    pubdate = input("Input publication date (mm/dd/yyyy):")
+    book_title = input("Input book title:")
+    num_copies = input("Input number of copies:")
+    # Build the SQL Statement, then we can add on the variables in the execute function call.
+    sql_insert = "insert into books(book_id, author_full_name, publication_date, book_title, num_copies) values (?,?,?,?,?)"
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql_insert, (bookID, author_name, pubdate, book_title, num_copies))
+        # Always commit, if forgotten, database not updated.
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def create_dbconnection(path):
+    conn = None
+    try:
+        conn = sqlite3.connect(path)
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+    return conn
+
+def printsql():
+    cur = os.getcwd()
+    conn = create_dbconnection(cur + '/test.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM books")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
 
 
 if __name__ == '__main__':
+    """
+    SQL stuff - building/inserting variables into table
+    Also a lazy printing table method.
+    Prog & Problem Solving II Final maybe?
+    """
+    #sqlthings()
+    #printsql()
+
     """
     Object Explanation and example, Abstraction stuff as well.
     Demonstrating new object creation, printing a 'toString' but in Python, using __str__
