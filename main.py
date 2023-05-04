@@ -8,6 +8,37 @@ import os
 import random
 import sqlite3
 from sqlite3 import Error
+import csv
+import string
+
+"""
+Generate a random password for employees, then add the password
+Onto a new spreadsheet (CSV File) that contains the following columns imported from an existing CSV File:
+first name, last name, phone and email. Essentially, creating a new CSV with appended password column.
+Note: writerows is used over writerow.
+"""
+
+
+def passwordGen(length):
+    all = string.ascii_letters+string.digits+'!@#$%^&*(){}?'
+    password = "".join(random.sample(all,length))
+    return password
+
+
+def csvPassword():
+    with open('employees.csv', 'r') as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+        passlength = 16
+        for i in range(len(rows)):
+            if i == 0:
+                rows[0].append("Password")
+                continue
+            newpass = passwordGen(passlength)
+            rows[i].append(newpass)
+    with open('empnew.csv', 'w', newline="") as fi:
+        writer = csv.writer(fi)
+        writer.writerows(rows)
 
 
 #Hot dog math for Prog & Problem Solving 129 stuff.
@@ -318,6 +349,11 @@ def printsql():
 
 
 if __name__ == '__main__':
+    """
+    CSV Employee Lab
+    """
+    csvPassword()
+
     """
     SQL stuff - building/inserting variables into table
     Also a lazy printing table method.
