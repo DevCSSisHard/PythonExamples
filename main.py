@@ -12,6 +12,83 @@ import csv
 import string
 
 """
+Dictionary sorting for balance example
+Take a nested dictionary and sort by value 'balance'
+Bubble sorting algorithm 
+Create two parallel lists of a balance and master key, then merge them using zip()
+Bubble sort by 2nd index, which is the balance.
+Discard the Balance by saving only the keys sorted merged list into a new list
+"""
+
+
+def dictSort(dict, field):
+    balanceList = []
+    keyList = []
+    for elem in dict:
+        print(recursive_search(dict[elem], field))
+        balanceList.append(eval(recursive_search(dict[elem], field)))
+        keyList.append(elem)
+
+    #print(balanceList)
+    #print(keyList)
+    r = list(zip(balanceList, keyList))
+    print(r)
+    for max in range(len(r) - 1, -1, -1):
+        swapped = False
+        for i in range(max):
+            #print("r[i][0]" , r[i][0])
+            #print("r[i + 1][1]", r[i + 1][0])
+            if r[i][0] < r[i + 1][0]:
+                r[i], r[i + 1] = r[i + 1], r[i]
+                swapped = True
+        if not swapped:
+            break
+    print(r)
+    sortedList = [x[1] for x in r]
+    print(sortedList)
+
+
+"""
+Create sample nested dictionary
+MasterKey : Account info
+"""
+
+
+def nestedDict():
+    account = {115: { 'name': 'Test Guy', 'balance': '3555'  },
+               116: { 'name': 'Test Dude', 'balance': '556322' },
+               117: { 'name': 'John', 'balance': '255'  },
+               118: { 'name' : 'Jane', 'balance' : '99999'}}
+    print(account)
+    x = recursive_search(account[115], 'name')
+    print(x)
+    return account
+
+"""
+Search nested dictionaries recursively, can support a list, probably not needed though
+Searches for a specific key, returns value of key. 
+"""
+
+def recursive_search(dictSearch, keySearch):
+    # if this is a dict, else if its a list, if neither - its not here.
+    if isinstance(dictSearch, dict):
+        if keySearch in dictSearch:
+            return dictSearch[keySearch]
+        # recursive search
+        for key in dictSearch:
+            item = recursive_search(dictSearch[key], keySearch)
+            if item is not None:
+                return item
+    elif isinstance(dictSearch, list):
+        for element in dictSearch:
+            # recursive search
+            item = recursive_search(element, keySearch)
+            if item is not None:
+                return item
+    return None
+
+
+"""
 Generate a random password for employees, then add the password
 Onto a new spreadsheet (CSV File) that contains the following columns imported from an existing CSV File:
 first name, last name, phone and email. Essentially, creating a new CSV with appended password column.
@@ -350,9 +427,17 @@ def printsql():
 
 if __name__ == '__main__':
     """
+    Final Project examples bank account
+    Create nested dictionary of accounts, search it recursively and also sort it by highest balance.
+    """
+    #acc = nestedDict()
+    #field = 'balance'
+    #dictSort(acc, field)
+
+    """
     CSV Employee Lab
     """
-    csvPassword()
+    #csvPassword()
 
     """
     SQL stuff - building/inserting variables into table
